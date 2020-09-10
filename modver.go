@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"os"
 	"os/exec"
 
 	"github.com/hashicorp/go-version"
@@ -31,6 +32,7 @@ func AllVersion(module string) ([]ModuleVersion, error) {
 	if err != nil {
 		return nil, fmt.Errorf("cannot create tmpdir: %w", err)
 	}
+	defer os.RemoveAll(dir)
 
 	if _, err := execCmd(dir, "go", "mod", "init", "tmp"); err != nil {
 		return nil, fmt.Errorf("go mod init tmp: %w", err)
